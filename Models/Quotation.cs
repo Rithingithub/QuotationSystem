@@ -15,10 +15,10 @@ namespace QuotationSystem.Models
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        public string Status { get; set; } = "Pending"; // Default to Pending
+        public string Status { get; set; } = "Pending";
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public User? User { get; set; } // Navigation property, nullable
+        public User? User { get; set; }
         public List<QuotationCourse> QuotationCourses { get; set; } = new List<QuotationCourse>();
         public List<Enquiry> Enquiries { get; set; } = new List<Enquiry>();
     }

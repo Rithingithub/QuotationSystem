@@ -32,8 +32,7 @@
                         <div>
                             @qc.CourseOption.Course.CourseName
                             - @qc.CourseOption.CourseType.TypeName
-                            - @qc.SelectedDuration
-                            - ₹@(qc.SelectedDuration == "Full" ? qc.CourseOption.FullCoursePrice : qc.CourseOption.HalfCoursePrice)
+                            - Full: ₹@qc.CourseOption.FullCoursePrice, Half: ₹@qc.CourseOption.HalfCoursePrice
                         </div>
                     }
                 </td>

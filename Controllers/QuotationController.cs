@@ -45,7 +45,6 @@ namespace QuotationSystem.Controllers
                     {
                         ModelState.Remove($"selectedOptions[{i}].FullCoursePrice");
                         ModelState.Remove($"selectedOptions[{i}].HalfCoursePrice");
-                        ModelState.Remove($"selectedOptions[{i}].SelectedDuration");
                     }
                 }
             }
@@ -64,7 +63,7 @@ namespace QuotationSystem.Controllers
                     if (!option.FullCoursePrice.HasValue || option.FullCoursePrice <= 0 ||
                         !option.HalfCoursePrice.HasValue || option.HalfCoursePrice <= 0)
                     {
-                        ModelState.AddModelError("", $"Full and Half Course Prices must be positive for {option.CourseOptionId}.");
+                        ModelState.AddModelError("", $"Full and Half Course Prices must be positive for option {option.CourseOptionId}.");
                     }
                 }
             }
@@ -101,8 +100,7 @@ namespace QuotationSystem.Controllers
                     _context.QuotationCourses.Add(new QuotationCourse
                     {
                         QuotationId = quotation.QuotationId,
-                        CourseOptionId = option.CourseOptionId,
-                        SelectedDuration = option.SelectedDuration ?? "Full"
+                        CourseOptionId = option.CourseOptionId
                     });
                 }
             }

@@ -57,11 +57,6 @@
                         <input type="number" step="0.01" name="selectedOptions[@index].HalfCoursePrice" class="form-control d-inline w-auto course-price-input" value="@option.HalfCoursePrice" data-val="true" data-val-required="Half Course Price is required when selected." data-val-range="Half Course Price must be positive." data-val-range-min="0.01" data-val-range-max="9999999" />
                         <span class="text-danger field-validation-error" data-valmsg-for="selectedOptions[@index].HalfCoursePrice"></span>
                     </div>
-
-                    <select name="selectedOptions[@index].SelectedDuration" class="form-select d-inline w-auto ms-2 course-duration-select">
-                        <option value="Full">Full</option>
-                        <option value="Half">Half</option>
-                    </select>
                 </div>
                 index++;
             }
@@ -77,14 +72,12 @@
         $(document).ready(function () {
             $('.course-option-checkbox').change(function () {
                 var index = $(this).attr('name').match(/\d+/)[0];
-                var inputs = $(`[name='selectedOptions[${index}].FullCoursePrice'], [name='selectedOptions[${index}].HalfCoursePrice'], [name='selectedOptions[${index}].SelectedDuration']`);
                 var priceInputs = $(`[name='selectedOptions[${index}].FullCoursePrice'], [name='selectedOptions[${index}].HalfCoursePrice']`);
-                inputs.prop('disabled', !this.checked);
+                priceInputs.prop('disabled', !this.checked);
                 if (this.checked) {
                     priceInputs.attr('required', 'required');
                 } else {
                     priceInputs.removeAttr('required').val('');
-                    // Clear validation messages
                     $(`[data-valmsg-for='selectedOptions[${index}].FullCoursePrice']`).text('');
                     $(`[data-valmsg-for='selectedOptions[${index}].HalfCoursePrice']`).text('');
                 }

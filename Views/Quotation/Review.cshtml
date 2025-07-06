@@ -1,5 +1,9 @@
 ﻿@model List<QuotationSystem.Models.Quotation>
 
+@{
+    ViewBag.Title = "Pending Quotations";
+}
+
 <h2>Pending Quotations</h2>
 
 @if (Model.Any())
@@ -26,11 +30,10 @@
                         {
                             <div class="mb-1">
                                 <span class="badge bg-secondary">@c.CourseOption.Course.CourseName</span><br />
-                                <small>@c.CourseOption.CourseType.TypeName - @c.SelectedDuration - ₹@(c.SelectedDuration == "Full" ? c.CourseOption.FullCoursePrice : c.CourseOption.HalfCoursePrice)</small>
+                                <small>@c.CourseOption.CourseType.TypeName - Full: ₹@c.CourseOption.FullCoursePrice, Half: ₹@c.CourseOption.HalfCoursePrice</small>
                             </div>
                         }
                     </td>
-
                     <td>
                         <form method="post" asp-action="UpdateStatus">
                             <input type="hidden" name="quotationId" value="@q.QuotationId" />

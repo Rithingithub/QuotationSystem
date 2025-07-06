@@ -1,65 +1,362 @@
 ﻿@model List<QuotationSystem.Models.Quotation>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Quotation Management";
 }
 
-<div class="container mt-4">
-    <h2 class="text-center mb-4">Recent Quotations</h2>
+<style>
+    .quotation-header {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        border-radius: 0 0 15px 15px;
+    }
 
+    .quotation-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        overflow: hidden;
+    }
+
+    .quotation-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .quotation-header-section {
+        background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+        color: white;
+        padding: 1.5rem;
+        position: relative;
+    }
+
+    .quotation-header-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+        opacity: 0.3;
+    }
+
+    .quotation-header-section h5 {
+        margin: 0;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
+    }
+
+    .quotation-body {
+        padding: 1.5rem;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .info-value {
+        color: #333;
+        font-weight: 500;
+    }
+
+    .status-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-declined {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .course-section {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    .course-item {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        transition: all 0.3s ease;
+    }
+
+    .course-item:hover {
+        border-color: #ff6b35;
+        box-shadow: 0 2px 8px rgba(255,107,53,0.1);
+    }
+
+    .course-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .course-name {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .course-details {
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .price-tag {
+        background: #ff6b35;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 0.5rem;
+    }
+
+    .enquiry-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .enquiry-title {
+        color: #8B4513;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .enquiry-title::before {
+        content: '✉';
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #ff6b35;
+        box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.25);
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        border: none;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #e55a2b 0%, #e0851a 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+    }
+
+    .empty-state::before {
+        content: '📋';
+        display: block;
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .company-logo {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .submission-date {
+        font-size: 0.8rem;
+        color: #999;
+        font-style: italic;
+        text-align: right;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #f0f0f0;
+    }
+</style>
+
+<div class="quotation-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="mb-0">
+                    <i class="fas fa-file-invoice-dollar me-3"></i>
+                    Quotation Management System
+                </h1>
+                <p class="mb-0 mt-2 opacity-75">Manage and track all quotation requests efficiently</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="d-flex align-items-center justify-content-end">
+                    <div class="me-3">
+                        <small>Date: @DateTime.Now.ToString("dd/MM/yyyy")</small><br>
+                        <small>Total: @(Model?.Count ?? 0) Quotations</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
     @if (Model != null && Model.Any())
     {
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="row g-4">
             @foreach (var q in Model)
             {
-                <div class="col">
-                    <div class="card h-50 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">@q.CompanyName</h5>
-                            <p class="card-text"><strong>Contact:</strong> @q.ContactDetails</p>
-                            <p class="card-text"><strong>Email:</strong> @q.Email</p>
-                            <p class="card-text">
-                                <strong>Status:</strong>
-                                <span class="badge bg-@(q.Status == "Approved" ? "success" : q.Status == "Declined" ? "danger" : "warning")">
+                <div class="col-lg-6 col-xl-4">
+                    <div class="quotation-card">
+                        <div class="quotation-header-section">
+                            <div class="d-flex align-items-center">
+                                <div class="company-logo me-3">
+                                    @(q.CompanyName.Substring(0, 1).ToUpper())
+                                </div>
+                                <div>
+                                    <h5 class="mb-1">@q.CompanyName</h5>
+                                    <small class="opacity-75">Quotation ID: #@q.QuotationId</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="quotation-body">
+                            <div class="info-row">
+                                <span class="info-label">Contact Person</span>
+                                <span class="info-value">@q.ContactDetails</span>
+                            </div>
+
+                            <div class="info-row">
+                                <span class="info-label">Email</span>
+                                <span class="info-value">@q.Email</span>
+                            </div>
+
+                            <div class="info-row">
+                                <span class="info-label">Status</span>
+                                <span class="status-badge @(q.Status == "Approved" ? "status-approved" : q.Status == "Declined" ? "status-declined" : "status-pending")">
                                     @q.Status
                                 </span>
-                            </p>
-                            <p class="card-text">
-                                <strong>Courses:</strong><br />
+                            </div>
+
+                            <div class="course-section">
+                                <div class="info-label mb-2">
+                                    <i class="fas fa-graduation-cap me-2"></i>Requested Courses
+                                </div>
                                 @foreach (var course in q.QuotationCourses)
                                 {
                                     var option = course.CourseOption;
-                                    var price = course.SelectedDuration == "Full" ? option.FullCoursePrice : option.HalfCoursePrice;
-                                    <div class="mb-1">
-                                        <span class="badge bg-secondary">@option.Course.CourseName (@option.Course.VehicleType)</span><br />
-                                        <small class="text-muted">@option.CourseType.TypeName - @course.SelectedDuration Course - ₹@price</small>
+                                    <div class="course-item">
+                                        <div class="course-name">
+                                            @option.Course.CourseName
+                                            <small class="text-muted">(@option.Course.VehicleType)</small>
+                                        </div>
+                                        <div class="course-details">
+                                            <strong>@option.CourseType.TypeName</strong><br>
+                                            <span class="price-tag">Full: ₹@option.FullCoursePrice</span>
+                                            <span class="price-tag">Half: ₹@option.HalfCoursePrice</span>
+                                        </div>
                                     </div>
                                 }
-                            </p>
-                            <p class="text-muted"><small>Submitted on @q.CreatedAt.ToShortDateString()</small></p>
+                            </div>
+
+                            <div class="submission-date">
+                                <i class="fas fa-clock me-1"></i>
+                                Submitted on @q.CreatedAt.ToShortDateString()
+                            </div>
                         </div>
-                    </div>
-                    <div class="card mt-3 shadow-sm">
-                        <div class="card-body">
-                            <h6 class="card-title">Send Enquiry</h6>
+
+                        <div class="enquiry-section">
+                            <h6 class="enquiry-title">Send Enquiry</h6>
                             <form asp-controller="Enquiry" asp-action="Submit" method="post" class="needs-validation" novalidate>
                                 <input type="hidden" name="QuotationId" value="@q.QuotationId" />
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Your Name</label>
-                                    <input type="text" name="Name" id="name" class="form-control" placeholder="Enter your name" required />
-                                    <div class="invalid-feedback">Please provide your name.</div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="name_@q.QuotationId" class="form-label">Your Name</label>
+                                        <input type="text" name="Name" id="name_@q.QuotationId" class="form-control" placeholder="Enter your name" required />
+                                        <div class="invalid-feedback">Please provide your name.</div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="email_@q.QuotationId" class="form-label">Your Email</label>
+                                        <input type="email" name="Email" id="email_@q.QuotationId" class="form-control" placeholder="Enter your email" required />
+                                        <div class="invalid-feedback">Please provide a valid email.</div>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Your Email</label>
-                                    <input type="email" name="Email" id="email" class="form-control" placeholder="Enter your email" required />
-                                    <div class="invalid-feedback">Please provide a valid email.</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="message" class="form-label">Message</label>
-                                    <textarea name="Message" id="message" class="form-control" rows="3" placeholder="Enter your message" required></textarea>
+
+                                <div class="mt-3">
+                                    <label for="message_@q.QuotationId" class="form-label">Message</label>
+                                    <textarea name="Message" id="message_@q.QuotationId" class="form-control" rows="3" placeholder="Enter your message" required></textarea>
                                     <div class="invalid-feedback">Please provide a message.</div>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Submit Enquiry</button>
+
+                                <div class="text-end mt-3">
+                                    <button type="submit" class="btn btn-submit">
+                                        <i class="fas fa-paper-plane me-2"></i>
+                                        Submit Enquiry
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -69,9 +366,15 @@
     }
     else
     {
-        <p class="text-center text-muted">No quotations available.</p>
+        <div class="empty-state">
+            <h3>No Quotations Available</h3>
+            <p>There are currently no quotation requests to display.</p>
+        </div>
     }
 </div>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <script>
     // Bootstrap validation
@@ -89,4 +392,25 @@
                 }, false);
             });
     })();
+
+    // Add smooth scrolling and form animations
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate cards on scroll
+        const cards = document.querySelectorAll('.quotation-card');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    });
 </script>
