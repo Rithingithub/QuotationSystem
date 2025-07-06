@@ -1,0 +1,26 @@
+﻿@model List<QuotationSystem.Models.Enquiry>
+
+<h2>Enquiry Dashboard</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Quotation</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@e.Quotation.CompanyName</td>
+                <td>@e.Name</td>
+                <td>@e.Email</td>
+                <td>@e.Message</td>
+                <td>@e.CreatedAt.ToString("g")</td>
+            </tr>
+        }
+    </tbody>
+</table>

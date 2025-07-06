@@ -1,0 +1,92 @@
+﻿@model List<QuotationSystem.Models.Quotation>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Recent Quotations</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var q in Model)
+            {
+                <div class="col">
+                    <div class="card h-50 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@q.CompanyName</h5>
+                            <p class="card-text"><strong>Contact:</strong> @q.ContactDetails</p>
+                            <p class="card-text"><strong>Email:</strong> @q.Email</p>
+                            <p class="card-text">
+                                <strong>Status:</strong>
+                                <span class="badge bg-@(q.Status == "Approved" ? "success" : q.Status == "Declined" ? "danger" : "warning")">
+                                    @q.Status
+                                </span>
+                            </p>
+                            <p class="card-text">
+                                <strong>Courses:</strong><br />
+                                @foreach (var course in q.QuotationCourses)
+                                {
+                                    var option = course.CourseOption;
+                                    var price = course.SelectedDuration == "Full" ? option.FullCoursePrice : option.HalfCoursePrice;
+                                    <div class="mb-1">
+                                        <span class="badge bg-secondary">@option.Course.CourseName (@option.Course.VehicleType)</span><br />
+                                        <small class="text-muted">@option.CourseType.TypeName - @course.SelectedDuration Course - ₹@price</small>
+                                    </div>
+                                }
+                            </p>
+                            <p class="text-muted"><small>Submitted on @q.CreatedAt.ToShortDateString()</small></p>
+                        </div>
+                    </div>
+                    <div class="card mt-3 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title">Send Enquiry</h6>
+                            <form asp-controller="Enquiry" asp-action="Submit" method="post" class="needs-validation" novalidate>
+                                <input type="hidden" name="QuotationId" value="@q.QuotationId" />
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Your Name</label>
+                                    <input type="text" name="Name" id="name" class="form-control" placeholder="Enter your name" required />
+                                    <div class="invalid-feedback">Please provide your name.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Your Email</label>
+                                    <input type="email" name="Email" id="email" class="form-control" placeholder="Enter your email" required />
+                                    <div class="invalid-feedback">Please provide a valid email.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Message</label>
+                                    <textarea name="Message" id="message" class="form-control" rows="3" placeholder="Enter your message" required></textarea>
+                                    <div class="invalid-feedback">Please provide a message.</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Submit Enquiry</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center text-muted">No quotations available.</p>
+    }
+</div>
+
+<script>
+    // Bootstrap validation
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+    })();
+</script>

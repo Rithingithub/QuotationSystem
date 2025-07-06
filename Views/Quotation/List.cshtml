@@ -1,0 +1,43 @@
+﻿@model List<QuotationSystem.Models.Quotation>
+
+@{
+    ViewBag.Title = "Quotation List";
+}
+
+<h2>Quotation List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var q in Model)
+        {
+            <tr>
+                <td>@q.CompanyName</td>
+                <td>@q.Email</td>
+                <td>
+                    <span class="badge bg-@(q.Status == "Approved" ? "success" : q.Status == "Declined" ? "danger" : "warning")">
+                        @q.Status
+                    </span>
+                </td>
+                <td>
+                    @foreach (var qc in q.QuotationCourses)
+                    {
+                        <div>
+                            @qc.CourseOption.Course.CourseName
+                            - @qc.CourseOption.CourseType.TypeName
+                            - @qc.SelectedDuration
+                            - ₹@(qc.SelectedDuration == "Full" ? qc.CourseOption.FullCoursePrice : qc.CourseOption.HalfCoursePrice)
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

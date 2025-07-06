@@ -1,0 +1,49 @@
+﻿@model List<QuotationSystem.Models.Quotation>
+
+<h2>Pending Quotations</h2>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Sales Person</th>
+                <th>Courses</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var q in Model)
+            {
+                <tr>
+                    <td>@q.CompanyName</td>
+                    <td>@q.Email</td>
+                    <td>@q.User.Name</td>
+                    <td>
+                        @foreach (var c in q.QuotationCourses)
+                        {
+                            <div class="mb-1">
+                                <span class="badge bg-secondary">@c.CourseOption.Course.CourseName</span><br />
+                                <small>@c.CourseOption.CourseType.TypeName - @c.SelectedDuration - ₹@(c.SelectedDuration == "Full" ? c.CourseOption.FullCoursePrice : c.CourseOption.HalfCoursePrice)</small>
+                            </div>
+                        }
+                    </td>
+
+                    <td>
+                        <form method="post" asp-action="UpdateStatus">
+                            <input type="hidden" name="quotationId" value="@q.QuotationId" />
+                            <button name="actionType" value="Approve" class="btn btn-success btn-sm">Approve</button>
+                            <button name="actionType" value="Decline" class="btn btn-danger btn-sm">Decline</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No pending quotations.</p>
+}

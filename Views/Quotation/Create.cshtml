@@ -1,0 +1,104 @@
+﻿@model QuotationSystem.Models.Quotation
+@{
+    ViewBag.Title = "Create Quotation";
+    var courses = ViewBag.Courses as List<QuotationSystem.Models.Course>;
+}
+
+<h2>Create Quotation</h2>
+@if (ViewBag.ModelErrors != null)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewBag.ModelErrors)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>Company Name</label>
+        <input asp-for="CompanyName" class="form-control" required />
+        <span asp-validation-for="CompanyName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Contact Details</label>
+        <input asp-for="ContactDetails" class="form-control" required />
+        <span asp-validation-for="ContactDetails" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" type="email" required />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Select Course Options</label>
+        @{
+            int index = 0;
+        }
+        @foreach (var course in courses)
+        {
+            <h5>@course.CourseName (@course.VehicleType)</h5>
+            @foreach (var option in course.CourseOptions)
+            {
+                <div class="mb-2">
+                    <input type="checkbox" name="selectedOptions[@index].IsSelected" value="true" class="course-option-checkbox" />
+                    <input type="hidden" name="selectedOptions[@index].CourseOptionId" value="@option.CourseOptionId" />
+
+                    <label>@option.CourseType.TypeName</label>
+
+                    <div class="ms-3">
+                        <label>Full Course Price (₹):</label>
+                        <input type="number" step="0.01" name="selectedOptions[@index].FullCoursePrice" class="form-control d-inline w-auto course-price-input" value="@option.FullCoursePrice" data-val="true" data-val-required="Full Course Price is required when selected." data-val-range="Full Course Price must be positive." data-val-range-min="0.01" data-val-range-max="9999999" />
+                        <span class="text-danger field-validation-error" data-valmsg-for="selectedOptions[@index].FullCoursePrice"></span>
+                        <label class="ms-2">Half Course Price (₹):</label>
+                        <input type="number" step="0.01" name="selectedOptions[@index].HalfCoursePrice" class="form-control d-inline w-auto course-price-input" value="@option.HalfCoursePrice" data-val="true" data-val-required="Half Course Price is required when selected." data-val-range="Half Course Price must be positive." data-val-range-min="0.01" data-val-range-max="9999999" />
+                        <span class="text-danger field-validation-error" data-valmsg-for="selectedOptions[@index].HalfCoursePrice"></span>
+                    </div>
+
+                    <select name="selectedOptions[@index].SelectedDuration" class="form-select d-inline w-auto ms-2 course-duration-select">
+                        <option value="Full">Full</option>
+                        <option value="Half">Half</option>
+                    </select>
+                </div>
+                index++;
+            }
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('.course-option-checkbox').change(function () {
+                var index = $(this).attr('name').match(/\d+/)[0];
+                var inputs = $(`[name='selectedOptions[${index}].FullCoursePrice'], [name='selectedOptions[${index}].HalfCoursePrice'], [name='selectedOptions[${index}].SelectedDuration']`);
+                var priceInputs = $(`[name='selectedOptions[${index}].FullCoursePrice'], [name='selectedOptions[${index}].HalfCoursePrice']`);
+                inputs.prop('disabled', !this.checked);
+                if (this.checked) {
+                    priceInputs.attr('required', 'required');
+                } else {
+                    priceInputs.removeAttr('required').val('');
+                    // Clear validation messages
+                    $(`[data-valmsg-for='selectedOptions[${index}].FullCoursePrice']`).text('');
+                    $(`[data-valmsg-for='selectedOptions[${index}].HalfCoursePrice']`).text('');
+                }
+            });
+            $('.course-option-checkbox').trigger('change');
+
+            // Client-side validation for at least one option
+            $('form').submit(function (e) {
+                if (!$('.course-option-checkbox:checked').length) {
+                    e.preventDefault();
+                    alert('At least one course option must be selected.');
+                    return false;
+                }
+            });
+        });
+    </script>
+}
