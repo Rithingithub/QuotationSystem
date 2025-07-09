@@ -35,11 +35,12 @@
                         }
                     </td>
                     <td>
-                        <form method="post" asp-action="UpdateStatus">
+                        <form method="post" asp-action="UpdateStatus" class="d-inline">
                             <input type="hidden" name="quotationId" value="@q.QuotationId" />
                             <button name="actionType" value="Approve" class="btn btn-success btn-sm">Approve</button>
                             <button name="actionType" value="Decline" class="btn btn-danger btn-sm">Decline</button>
                         </form>
+                        <a href="@Url.Action("DownloadQuotationPdf", new { quotationId = q.QuotationId })" class="btn btn-primary btn-sm">Download PDF</a>
                     </td>
                 </tr>
             }
