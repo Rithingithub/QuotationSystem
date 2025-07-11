@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-07-09T10:54:01.2241374Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-07-11T15:06:56.4068660Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -125,15 +125,17 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                     <Style>
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>28pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>Tan</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Left>1.54667in</Left>
+            <Left>1.87722in</Left>
             <Height>0.5in</Height>
-            <Width>2.11667in</Width>
+            <Width>1.8in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -189,6 +191,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>Silver</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -219,6 +222,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>Silver</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -249,6 +253,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>Silver</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -281,6 +286,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>Silver</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -313,6 +319,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>Silver</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -505,7 +512,8 @@ WHERE q.QuotationId = @QuotationId</CommandText>
             </TablixRowHierarchy>
             <DataSetName>QuotationData</DataSetName>
             <Top>1.58833in</Top>
-            <Height>0.44167in</Height>
+            <Left>0.01389in</Left>
+            <Height>0.44166in</Height>
             <Width>6in</Width>
             <ZIndex>1</ZIndex>
             <Style>
@@ -523,16 +531,18 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>=First(Fields!CompanyName.Value, "QuotationData")</Value>
-                    <Style />
+                    <Style>
+                      <Color>Tan</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>0.705in</Top>
-            <Left>0.13833in</Left>
+            <Top>0.25in</Top>
+            <Left>4.01389in</Left>
             <Height>0.25in</Height>
-            <Width>1in</Width>
+            <Width>1.80833in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -559,10 +569,10 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.13833in</Top>
-            <Left>0.13in</Left>
+            <Top>1.03833in</Top>
+            <Left>1.06056in</Left>
             <Height>0.25in</Height>
-            <Width>1in</Width>
+            <Width>2.61666in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -589,11 +599,70 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>0.97167in</Top>
-            <Left>3.28in</Left>
+            <Top>0.65223in</Top>
+            <Left>1.06056in</Left>
             <Height>0.25in</Height>
-            <Width>1in</Width>
+            <Width>2.61666in</Width>
             <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox2">
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>E-mail </Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.65223in</Top>
+            <Left>0.01389in</Left>
+            <Height>0.25in</Height>
+            <Width>1.04667in</Width>
+            <ZIndex>5</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox4">
+            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Contact</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>1.03833in</Top>
+            <Height>0.25in</Height>
+            <Width>1.04667in</Width>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -612,7 +681,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
           </Border>
         </Style>
       </Body>
-      <Width>6in</Width>
+      <Width>6.01389in</Width>
       <Page>
         <PageFooter>
           <Height>0.45in</Height>
@@ -637,7 +706,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                 </Paragraph>
               </Paragraphs>
               <Top>0.2in</Top>
-              <Left>4in</Left>
+              <Left>4.01389in</Left>
               <Height>0.25in</Height>
               <Width>2in</Width>
               <Style>
