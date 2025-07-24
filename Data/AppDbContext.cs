@@ -13,9 +13,22 @@ public class AppDbContext : DbContext
     public DbSet<QuotationCourse> QuotationCourses { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Enquiry> Enquiries { get; set; }
+    public DbSet<QuotationCoursePrice> QuotationCoursePrices { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<QuotationCoursePrice>()
+            .HasOne(qcp => qcp.QuotationCourse)
+            .WithOne(qc => qc.QuotationCoursePrice)
+            .HasForeignKey<QuotationCoursePrice>(qcp => qcp.QuotationCourseId)
+            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<QuotationCoursePrice>()
+            .Property(qcp => qcp.FullCoursePrice)
+            .HasPrecision(18, 2);
+        modelBuilder.Entity<QuotationCoursePrice>()
+            .Property(qcp => qcp.HalfCoursePrice)
+            .HasPrecision(18, 2);
         modelBuilder.Entity<QuotationCourse>()
             .HasOne(qc => qc.Quotation)
             .WithMany(q => q.QuotationCourses)

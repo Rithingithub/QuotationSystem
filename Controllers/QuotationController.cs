@@ -11,14 +11,13 @@ namespace QuotationSystem.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly string _ssrsServerUrl = "http://your-ssrs-server/ReportServer"; // Update with your SSRS server URL
-        private readonly string _reportPath = "/Reports/QuotationReport"; // Update with your report path
+        private readonly string _ssrsServerUrl = "http://your-ssrs-server/ReportServer";
+        private readonly string _reportPath = "/Reports/QuotationReport";
 
         public QuotationController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
-            // Required for AspNetCore.Reporting to resolve font issues
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
@@ -99,15 +98,28 @@ namespace QuotationSystem.Controllers
 
                 if (courseOption != null)
                 {
-                    courseOption.FullCoursePrice = option.FullCoursePrice!.Value;
-                    courseOption.HalfCoursePrice = option.HalfCoursePrice!.Value;
-                    _context.CourseOptions.Update(courseOption);
-
-                    _context.QuotationCourses.Add(new QuotationCourse
+                    // Create QuotationCourse
+                    var quotationCourse = new QuotationCourse
                     {
                         QuotationId = quotation.QuotationId,
                         CourseOptionId = option.CourseOptionId
-                    });
+                    };
+                    _context.QuotationCourses.Add(quotationCourse);
+                    await _context.SaveChangesAsync(); // Save to get the ID
+
+                    // Check if prices are different from default (custom pricing)
+                    bool isCustomPrice = option.FullCoursePrice.Value != courseOption.FullCoursePrice ||
+                                       option.HalfCoursePrice.Value != courseOption.HalfCoursePrice;
+
+                    // Create QuotationCoursePrice record
+                    var quotationCoursePrice = new QuotationCoursePrice
+                    {
+                        QuotationCourseId = quotationCourse.QuotationCourseId,
+                        FullCoursePrice = option.FullCoursePrice.Value,
+                        HalfCoursePrice = option.HalfCoursePrice.Value,
+                        IsCustomPrice = isCustomPrice
+                    };
+                    _context.QuotationCoursePrices.Add(quotationCoursePrice);
                 }
             }
 
@@ -131,6 +143,8 @@ namespace QuotationSystem.Controllers
                 .Include(q => q.QuotationCourses)
                     .ThenInclude(qc => qc.CourseOption)
                         .ThenInclude(co => co.CourseType)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.QuotationCoursePrice) // Include custom pricing
                 .OrderByDescending(q => q.CreatedAt)
                 .ToList();
 
@@ -151,6 +165,8 @@ namespace QuotationSystem.Controllers
                 .Include(q => q.QuotationCourses)
                     .ThenInclude(qc => qc.CourseOption)
                         .ThenInclude(co => co.CourseType)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.QuotationCoursePrice) // Include custom pricing for review
                 .OrderBy(q => q.CreatedAt)
                 .ToList();
 
@@ -172,6 +188,8 @@ namespace QuotationSystem.Controllers
                 .Include(q => q.QuotationCourses)
                     .ThenInclude(qc => qc.CourseOption)
                         .ThenInclude(co => co.CourseType)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.QuotationCoursePrice) // Include custom pricing
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
@@ -185,7 +203,6 @@ namespace QuotationSystem.Controllers
 
             return View(approvedQuotations.OrderByDescending(q => q.CreatedAt).ToList());
         }
-
 
         [HttpPost]
         public IActionResult UpdateStatus(int quotationId, string actionType)
@@ -205,7 +222,7 @@ namespace QuotationSystem.Controllers
             var role = HttpContext.Session.GetString("UserRole");
             if (role != "Admin") return RedirectToAction("Login", "Account");
 
-            // Fetch quotation data
+            // Fetch quotation data with custom pricing
             var quotation = _context.Quotations
                 .Where(q => q.QuotationId == quotationId)
                 .Include(q => q.User)
@@ -215,6 +232,8 @@ namespace QuotationSystem.Controllers
                 .Include(q => q.QuotationCourses)
                     .ThenInclude(qc => qc.CourseOption)
                         .ThenInclude(co => co.CourseType)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.QuotationCoursePrice) // Include custom pricing
                 .FirstOrDefault();
 
             if (quotation == null)
@@ -236,9 +255,15 @@ namespace QuotationSystem.Controllers
             dt.Columns.Add("CourseTypeName", typeof(string));
             dt.Columns.Add("FullCoursePrice", typeof(decimal));
             dt.Columns.Add("HalfCoursePrice", typeof(decimal));
+            dt.Columns.Add("IsCustomPrice", typeof(bool)); // Add this to show if custom pricing was used
 
             foreach (var qc in quotation.QuotationCourses)
             {
+                // Use custom pricing if available, otherwise use default from CourseOption
+                var fullPrice = qc.QuotationCoursePrice?.FullCoursePrice ?? qc.CourseOption.FullCoursePrice;
+                var halfPrice = qc.QuotationCoursePrice?.HalfCoursePrice ?? qc.CourseOption.HalfCoursePrice;
+                var isCustom = qc.QuotationCoursePrice?.IsCustomPrice ?? false;
+
                 dt.Rows.Add(
                     quotation.QuotationId,
                     quotation.CompanyName,
@@ -250,18 +275,15 @@ namespace QuotationSystem.Controllers
                     qc.CourseOption.Course.CourseName,
                     qc.CourseOption.Course.VehicleType,
                     qc.CourseOption.CourseType.TypeName,
-                    qc.CourseOption.FullCoursePrice,
-                    qc.CourseOption.HalfCoursePrice
+                    fullPrice,
+                    halfPrice,
+                    isCustom
                 );
             }
 
             // Render report using AspNetCore.Reporting
             var report = new LocalReport();
-            report.ReportPath = Path.Combine(_webHostEnvironment.WebRootPath, "Reports", "QuotationReport.rdl"); // Local RDL file path
-            // For SSRS server, uncomment below and comment out ReportPath
-            // report.ReportPath = _reportPath; // e.g., "/Reports/QuotationReport"
-            // report.IsServerReport = true;
-            // report.ReportServerUrl = new Uri(_ssrsServerUrl);
+            report.ReportPath = Path.Combine(_webHostEnvironment.WebRootPath, "Reports", "QuotationReport.rdl");
 
             report.DataSources.Add(new ReportDataSource("QuotationData", dt));
 

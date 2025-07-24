@@ -1,53 +1,241 @@
 ﻿@model List<QuotationSystem.Models.Quotation>
-
 @{
-    ViewBag.Title = "Pending Quotations";
+    ViewBag.Title = "My Quotations";
 }
 
-<h2>Pending Quotations</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>My Quotations</h2>
+    <a href="@Url.Action("Create")" class="btn btn-primary">
+        <i class="fas fa-plus me-1"></i>Create New Quotation
+    </a>
+</div>
 
-@if (Model.Any())
+<div class="row mb-3">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h3>@Model.Count</h3>
+                <p class="mb-0">Total Quotations</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark">
+            <div class="card-body text-center">
+                <h3>@Model.Count(q => q.Status == "Pending")</h3>
+                <p class="mb-0">Pending</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h3>@Model.Count(q => q.Status == "Approved")</h3>
+                <p class="mb-0">Approved</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body text-center">
+                <h3>@Model.Count(q => q.Status == "Declined")</h3>
+                <p class="mb-0">Declined</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
 {
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Company</th>
-                <th>Email</th>
-                <th>Sales Person</th>
-                <th>Courses</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var q in Model)
-            {
-                <tr>
-                    <td>@q.CompanyName</td>
-                    <td>@q.Email</td>
-                    <td>@q.User.Name</td>
-                    <td>
-                        @foreach (var c in q.QuotationCourses)
-                        {
-                            <div class="mb-1">
-                                <span class="badge bg-secondary">@c.CourseOption.Course.CourseName</span><br />
-                                <small>@c.CourseOption.CourseType.TypeName - Full: ₹@c.CourseOption.FullCoursePrice, Half: ₹@c.CourseOption.HalfCoursePrice</small>
-                            </div>
-                        }
-                    </td>
-                    <td>
-                        <form method="post" asp-action="UpdateStatus" class="d-inline">
-                            <input type="hidden" name="quotationId" value="@q.QuotationId" />
-                            <button name="actionType" value="Approve" class="btn btn-success btn-sm">Approve</button>
-                            <button name="actionType" value="Decline" class="btn btn-danger btn-sm">Decline</button>
-                        </form>
-                        <a href="@Url.Action("DownloadQuotationPdf", new { quotationId = q.QuotationId })" class="btn btn-primary btn-sm">Download PDF</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="alert alert-info text-center">
+        <i class="fas fa-info-circle me-2"></i>
+        You haven't created any quotations yet. <a href="@Url.Action("Create")" class="alert-link">Create your first quotation</a>.
+    </div>
 }
 else
 {
-    <p>No pending quotations.</p>
+    @foreach (var quotation in Model)
+    {
+        <div class="card mb-3 shadow-sm">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-0">
+                            <i class="fas fa-building me-2"></i>@quotation.CompanyName
+                            <small class="text-muted">(ID: #@quotation.QuotationId)</small>
+                        </h5>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar me-1"></i>@quotation.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")
+                        </small>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        @switch (quotation.Status)
+                        {
+                            case "Pending":
+                                <span class="badge bg-warning text-dark fs-6">
+                                    <i class="fas fa-clock me-1"></i>@quotation.Status
+                                </span>
+                                break;
+                            case "Approved":
+                                <span class="badge bg-success fs-6">
+                                    <i class="fas fa-check me-1"></i>@quotation.Status
+                                </span>
+                                break;
+                            case "Declined":
+                                <span class="badge bg-danger fs-6">
+                                    <i class="fas fa-times me-1"></i>@quotation.Status
+                                </span>
+                                break;
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-envelope me-2"></i>Email:</strong> @quotation.Email
+                    </div>
+                    <div class="col-md-6">
+                        <strong><i class="fas fa-phone me-2"></i>Contact:</strong> @quotation.ContactDetails
+                    </div>
+                </div>
+
+                <div class="accordion" id="accordion@(quotation.QuotationId)">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading@(quotation.QuotationId)">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse@(quotation.QuotationId)" aria-expanded="false" aria-controls="collapse@(quotation.QuotationId)">
+                                <i class="fas fa-list me-2"></i>View Course Details & Pricing
+                                @if (quotation.QuotationCourses.Any(qc => qc.QuotationCoursePrice?.IsCustomPrice == true))
+                                {
+                                    <span class="badge bg-warning text-dark ms-2">Custom Pricing</span>
+                                }
+                            </button>
+                        </h2>
+                        <div id="collapse@(quotation.QuotationId)" class="accordion-collapse collapse" aria-labelledby="heading@(quotation.QuotationId)" data-bs-parent="#accordion@(quotation.QuotationId)">
+                            <div class="accordion-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Course</th>
+                                                <th>Vehicle Type</th>
+                                                <th>Course Type</th>
+                                                <th>Full Course Price</th>
+                                                <th>Half Course Price</th>
+                                                <th>Price Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach
+
+                                                                                (var qc in quotation.QuotationCourses)
+                                            {
+                                                var actualFullPrice = qc.QuotationCoursePrice?.FullCoursePrice ?? qc.CourseOption.FullCoursePrice;
+                                                var actualHalfPrice = qc.QuotationCoursePrice?.HalfCoursePrice ?? qc.CourseOption.HalfCoursePrice;
+                                                var isCustomPrice = qc.QuotationCoursePrice?.IsCustomPrice ?? false;
+
+                                                <tr>
+                                                    <td>@qc.CourseOption.Course.CourseName</td>
+                                                    <td>
+                                                        <span class="badge bg-secondary">@qc.CourseOption.Course.VehicleType</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-info">@qc.CourseOption.CourseType.TypeName</span>
+                                                    </td>
+                                                    <td>₹@actualFullPrice.ToString("N2")</td>
+                                                    <td>₹@actualHalfPrice.ToString("N2")</td>
+                                                    <td>
+                                                        @if (isCustomPrice)
+                                                        {
+                                                            <span class="badge bg-warning text-dark">
+                                                                <i class="fas fa-edit me-1"></i>Custom
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-success">
+                                                                <i class="fas fa-check me-1"></i>Default
+                                                            </span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot class="table-light">
+                                            <tr>
+                                                <th colspan="3">Total</th>
+                                                <th>₹@quotation.QuotationCourses.Sum(qc => qc.QuotationCoursePrice?.FullCoursePrice ?? qc.CourseOption.FullCoursePrice).ToString("N2")</th>
+                                                <th>₹@quotation.QuotationCourses.Sum(qc => qc.QuotationCoursePrice?.HalfCoursePrice ?? qc.CourseOption.HalfCoursePrice).ToString("N2")</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-end">
+                @if (quotation.Status == "Pending")
+                {
+                    <form method="post" asp-action="UpdateStatus" class="d-inline">
+                        <input type="hidden" name="quotationId" value="@quotation.QuotationId" />
+                        <button name="actionType" value="Approve" class="btn btn-success btn-sm me-1">
+                            <i class="fas fa-check me-1"></i>Approve
+                        </button>
+                        <button name="actionType" value="Decline" class="btn btn-danger btn-sm me-1">
+                            <i class="fas fa-times me-1"></i>Decline
+                        </button>
+                    </form>
+                }
+                <a href="@Url.Action("DownloadQuotationPdf", new { quotationId = quotation.QuotationId })" class="btn btn-primary btn-sm">
+                    <i class="fas fa-download me-1"></i>Download PDF
+                </a>
+            </div>
+        </div>
+    }
+}
+
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+        border-left: 4px solid transparent;
+    }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card:has(.badge:contains("Pending")) {
+            border-left-color: #ffc107;
+        }
+
+        .card:has(.badge:contains("Approved")) {
+            border-left-color: #198754;
+        }
+
+        .card:has(.badge:contains("Declined")) {
+            border-left-color: #dc3545;
+        }
+
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #0c63e4;
+    }
+
+    .badge {
+        font-size: 0.75em;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto-expand accordion for pending quotations
+            $('.badge:contains("Pending")').closest('.card').find('.accordion-button').removeClass('collapsed').attr('aria-expanded', 'true');
+            $('.badge:contains("Pending")').closest('.card').find('.accordion-collapse').addClass('show');
+        });
+    </script>
 }

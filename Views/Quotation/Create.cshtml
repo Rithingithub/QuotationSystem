@@ -17,71 +17,173 @@
     </div>
 }
 <form asp-action="Create" method="post">
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label>Company Name</label>
         <input asp-for="CompanyName" class="form-control" required />
         <span asp-validation-for="CompanyName" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label>Contact Details</label>
         <input asp-for="ContactDetails" class="form-control" required />
         <span asp-validation-for="ContactDetails" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    <div class="form-group mb-3">
         <label>Email</label>
         <input asp-for="Email" class="form-control" type="email" required />
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label>Select Course Options</label>
+        <label><strong>Select Course Options</strong></label>
         @{
             int index = 0;
         }
         @foreach (var course in courses)
         {
-            <h5>@course.CourseName (@course.VehicleType)</h5>
-            @foreach (var option in course.CourseOptions)
-            {
-                <div class="mb-2">
-                    <input type="checkbox" name="selectedOptions[@index].IsSelected" value="true" class="course-option-checkbox" />
-                    <input type="hidden" name="selectedOptions[@index].CourseOptionId" value="@option.CourseOptionId" />
-
-                    <label>@option.CourseType.TypeName</label>
-
-                    <div class="ms-3">
-                        <label>Full Course Price (₹):</label>
-                        <input type="number" step="0.01" name="selectedOptions[@index].FullCoursePrice" class="form-control d-inline w-auto course-price-input" value="@option.FullCoursePrice" data-val="true" data-val-required="Full Course Price is required when selected." data-val-range="Full Course Price must be positive." data-val-range-min="0.01" data-val-range-max="9999999" />
-                        <span class="text-danger field-validation-error" data-valmsg-for="selectedOptions[@index].FullCoursePrice"></span>
-                        <label class="ms-2">Half Course Price (₹):</label>
-                        <input type="number" step="0.01" name="selectedOptions[@index].HalfCoursePrice" class="form-control d-inline w-auto course-price-input" value="@option.HalfCoursePrice" data-val="true" data-val-required="Half Course Price is required when selected." data-val-range="Half Course Price must be positive." data-val-range-min="0.01" data-val-range-max="9999999" />
-                        <span class="text-danger field-validation-error" data-valmsg-for="selectedOptions[@index].HalfCoursePrice"></span>
-                    </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">@course.CourseName (@course.VehicleType)</h5>
                 </div>
-                index++;
-            }
+                <div class="card-body">
+                    @foreach (var option in course.CourseOptions)
+                    {
+                        <div class="border rounded p-3 mb-3 course-option-container">
+                            <div class="form-check mb-2">
+                                <input type="checkbox" name="selectedOptions[@index].IsSelected" value="true" class="form-check-input course-option-checkbox" id="option_@index" />
+                                <input type="hidden" name="selectedOptions[@index].CourseOptionId" value="@option.CourseOptionId" />
+                                <label class="form-check-label fw-bold" for="option_@index">
+                                    @option.CourseType.TypeName
+                                </label>
+                            </div>
+
+                            <div class="pricing-section">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Default Full Course Price: <strong>₹@option.FullCoursePrice.ToString("N2")</strong></small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">Default Half Course Price: <strong>₹@option.HalfCoursePrice.ToString("N2")</strong></small>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Custom Full Course Price (₹):</label>
+                                        <input type="number" step="0.01" name="selectedOptions[@index].FullCoursePrice"
+                                               class="form-control course-price-input"
+                                               value="@option.FullCoursePrice"
+                                               placeholder="Enter custom price or use default"
+                                               data-val="true"
+                                               data-val-required="Full Course Price is required when selected."
+                                               data-val-range="Full Course Price must be positive."
+                                               data-val-range-min="0.01"
+                                               data-val-range-max="9999999" />
+                                        <span class="text-danger field-validation-error" data-valmsg-for="selectedOptions[@index].FullCoursePrice"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Custom Half Course Price (₹):</label>
+                                        <input type="number" step="0.01" name="selectedOptions[@index].HalfCoursePrice"
+                                               class="form-control course-price-input"
+                                               value="@option.HalfCoursePrice"
+                                               placeholder="Enter custom price or use default"
+                                               data-val="true"
+                                               data-val-required="Half Course Price is required when selected."
+                                               data-val-range="Half Course Price must be positive."
+                                               data-val-range-min="0.01"
+                                               data-val-range-max="9999999" />
+                                        <span class="text-danger field-validation-error" data-valmsg-for="selectedOptions[@index].HalfCoursePrice"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary reset-to-default" data-index="@index" data-full-price="@option.FullCoursePrice" data-half-price="@option.HalfCoursePrice">
+                                            Reset to Default Prices
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        index++;
+                    }
+                </div>
+            </div>
         }
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Submit Quotation</button>
+        <a href="@Url.Action("List")" class="btn btn-secondary">Cancel</a>
+    </div>
 </form>
+
+<style>
+    .course-option-container {
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+
+        .course-option-container.selected {
+            background-color: #e3f2fd;
+            border-color: #2196f3 !important;
+        }
+
+    .pricing-section {
+        margin-left: 1.5rem;
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
+    }
+
+        .pricing-section.enabled {
+            opacity: 1;
+        }
+
+    .course-price-input:disabled {
+        background-color: #e9ecef;
+    }
+
+    .card-header {
+        background-color: #343a40;
+        color: white;
+    }
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function () {
+            // Handle checkbox changes
             $('.course-option-checkbox').change(function () {
                 var index = $(this).attr('name').match(/\d+/)[0];
+                var container = $(this).closest('.course-option-container');
+                var pricingSection = container.find('.pricing-section');
                 var priceInputs = $(`[name='selectedOptions[${index}].FullCoursePrice'], [name='selectedOptions[${index}].HalfCoursePrice']`);
-                priceInputs.prop('disabled', !this.checked);
+
                 if (this.checked) {
-                    priceInputs.attr('required', 'required');
+                    container.addClass('selected');
+                    pricingSection.addClass('enabled');
+                    priceInputs.prop('disabled', false).attr('required', 'required');
                 } else {
-                    priceInputs.removeAttr('required').val('');
+                    container.removeClass('selected');
+                    pricingSection.removeClass('enabled');
+                    priceInputs.prop('disabled', true).removeAttr('required');
+                    // Clear validation messages
                     $(`[data-valmsg-for='selectedOptions[${index}].FullCoursePrice']`).text('');
                     $(`[data-valmsg-for='selectedOptions[${index}].HalfCoursePrice']`).text('');
                 }
             });
+
+            // Handle reset to default prices
+            $('.reset-to-default').click(function () {
+                var index = $(this).data('index');
+                var fullPrice = $(this).data('full-price');
+                var halfPrice = $(this).data('half-price');
+
+                $(`[name='selectedOptions[${index}].FullCoursePrice']`).val(fullPrice);
+                $(`[name='selectedOptions[${index}].HalfCoursePrice']`).val(halfPrice);
+            });
+
+            // Initialize the state
             $('.course-option-checkbox').trigger('change');
 
             // Client-side validation for at least one option
@@ -90,6 +192,44 @@
                     e.preventDefault();
                     alert('At least one course option must be selected.');
                     return false;
+                }
+
+                // Additional validation for selected options
+                var isValid = true;
+                $('.course-option-checkbox:checked').each(function() {
+                    var index = $(this).attr('name').match(/\d+/)[0];
+                    var fullPrice = parseFloat($(`[name='selectedOptions[${index}].FullCoursePrice']`).val());
+                    var halfPrice = parseFloat($(`[name='selectedOptions[${index}].HalfCoursePrice']`).val());
+
+                    if (isNaN(fullPrice) || fullPrice <= 0 || isNaN(halfPrice) || halfPrice <= 0) {
+                        isValid = false;
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    alert('Please enter valid prices for all selected course options.');
+                    return false;
+                }
+            });
+
+            // Highlight price changes
+            $('.course-price-input').on('input', function() {
+                var container = $(this).closest('.course-option-container');
+                var index = $(this).attr('name').match(/\d+/)[0];
+                var resetBtn = container.find(`[data-index='${index}']`);
+
+                var currentFullPrice = parseFloat($(`[name='selectedOptions[${index}].FullCoursePrice']`).val());
+                var currentHalfPrice = parseFloat($(`[name='selectedOptions[${index}].HalfCoursePrice']`).val());
+                var defaultFullPrice = parseFloat(resetBtn.data('full-price'));
+                var defaultHalfPrice = parseFloat(resetBtn.data('half-price'));
+
+                if (currentFullPrice !== defaultFullPrice || currentHalfPrice !== defaultHalfPrice) {
+                    $(this).addClass('border-warning');
+                    resetBtn.removeClass('btn-outline-secondary').addClass('btn-warning');
+                } else {
+                    container.find('.course-price-input').removeClass('border-warning');
+                    resetBtn.removeClass('btn-warning').addClass('btn-outline-secondary');
                 }
             });
         });
