@@ -325,40 +325,6 @@
                                 Submitted on @q.CreatedAt.ToShortDateString()
                             </div>
                         </div>
-
-                        <div class="enquiry-section">
-                            <h6 class="enquiry-title">Send Enquiry</h6>
-                            <form asp-controller="Enquiry" asp-action="Submit" method="post" class="needs-validation" novalidate>
-                                <input type="hidden" name="QuotationId" value="@q.QuotationId" />
-
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <label for="name_@q.QuotationId" class="form-label">Your Name</label>
-                                        <input type="text" name="Name" id="name_@q.QuotationId" class="form-control" placeholder="Enter your name" required />
-                                        <div class="invalid-feedback">Please provide your name.</div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="email_@q.QuotationId" class="form-label">Your Email</label>
-                                        <input type="email" name="Email" id="email_@q.QuotationId" class="form-control" placeholder="Enter your email" required />
-                                        <div class="invalid-feedback">Please provide a valid email.</div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-3">
-                                    <label for="message_@q.QuotationId" class="form-label">Message</label>
-                                    <textarea name="Message" id="message_@q.QuotationId" class="form-control" rows="3" placeholder="Enter your message" required></textarea>
-                                    <div class="invalid-feedback">Please provide a message.</div>
-                                </div>
-
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-submit">
-                                        <i class="fas fa-paper-plane me-2"></i>
-                                        Submit Enquiry
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
             }

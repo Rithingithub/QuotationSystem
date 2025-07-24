@@ -1,0 +1,53 @@
+﻿@model List<QuotationSystem.Models.Quotation>
+@{
+    ViewBag.Title = "Approved Quotations";
+}
+
+<h2 class="mb-4">Approved Quotations</h2>
+
+<form method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchTerm" class="form-control" placeholder="Search..." value="@Context.Request.Query["searchTerm"]" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Courses</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var q in Model)
+            {
+                <tr>
+                    <td>@q.CompanyName</td>
+                    <td>@q.Email</td>
+                    <td>@q.ContactDetails</td>
+                    <td>
+                        @foreach (var qc in q.QuotationCourses)
+                        {
+                            <div>
+                                @qc.CourseOption.Course.CourseName
+                                - @qc.CourseOption.CourseType.TypeName
+                                - Full: ₹@qc.CourseOption.FullCoursePrice, Half: ₹@qc.CourseOption.HalfCoursePrice
+                            </div>
+                        }
+                    </td>
+                    <td>@q.CreatedAt.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">No approved quotations found.</p>
+}

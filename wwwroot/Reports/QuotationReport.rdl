@@ -11,7 +11,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.1.30001.02</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-07-11T15:06:56.4068660Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-07-14T12:29:27.0096025Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -121,21 +121,21 @@ WHERE q.QuotationId = @QuotationId</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Quotation</Value>
+                    <Value>ALRAYAH  DRIVING SCHOOL</Value>
                     <Style>
-                      <FontFamily>Segoe UI Light</FontFamily>
-                      <FontSize>28pt</FontSize>
+                      <FontFamily>Sylfaen</FontFamily>
+                      <FontSize>18pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>Tan</Color>
+                      <Color>#581424</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Left>1.87722in</Left>
+            <Left>0.52778in</Left>
             <Height>0.5in</Height>
-            <Width>1.8in</Width>
+            <Width>3.72556in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -150,19 +150,19 @@ WHERE q.QuotationId = @QuotationId</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.44889in</Width>
+                  <Width>1.34556in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.10722in</Width>
+                  <Width>1.00389in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.10722in</Width>
+                  <Width>1.00389in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>0.89667in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.33667in</Width>
+                  <Width>1.23334in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -180,7 +180,9 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>Course Name</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>White</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -191,7 +193,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Silver</BackgroundColor>
+                            <BackgroundColor>#581424</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -211,7 +213,9 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>Vehicle Type</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>White</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -222,7 +226,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Silver</BackgroundColor>
+                            <BackgroundColor>#581424</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -242,7 +246,9 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>Course Type Name</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>White</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -253,7 +259,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Silver</BackgroundColor>
+                            <BackgroundColor>#581424</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -275,6 +281,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                                   <Value>Full Course Price</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -286,7 +293,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Silver</BackgroundColor>
+                            <BackgroundColor>#581424</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -308,6 +315,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                                   <Value>Half Course Price</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -319,7 +327,7 @@ WHERE q.QuotationId = @QuotationId</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Silver</BackgroundColor>
+                            <BackgroundColor>#581424</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -511,10 +519,10 @@ WHERE q.QuotationId = @QuotationId</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>QuotationData</DataSetName>
-            <Top>1.58833in</Top>
-            <Left>0.01389in</Left>
+            <Top>2.03833in</Top>
+            <Left>0.005in</Left>
             <Height>0.44166in</Height>
-            <Width>6in</Width>
+            <Width>5.48333in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -522,98 +530,47 @@ WHERE q.QuotationId = @QuotationId</CommandText>
               </Border>
             </Style>
           </Tablix>
-          <Textbox Name="CompanyName">
-            <rd:DefaultName>CompanyName</rd:DefaultName>
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!CompanyName.Value, "QuotationData")</Value>
-                    <Style>
-                      <Color>Tan</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.25in</Top>
-            <Left>4.01389in</Left>
-            <Height>0.25in</Height>
-            <Width>1.80833in</Width>
+          <Image Name="Image1">
+            <Source>Embedded</Source>
+            <Value>Screenshot20250714180220</Value>
+            <Sizing>FitProportional</Sizing>
+            <Left>0.01389in</Left>
+            <Height>0.5in</Height>
+            <Width>0.5in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
             </Style>
-          </Textbox>
-          <Textbox Name="ContactDetails">
-            <rd:DefaultName>ContactDetails</rd:DefaultName>
-            <CanGrow>true</CanGrow>
+          </Image>
+          <Rectangle Name="Rectangle1">
+            <ReportItems>
+              <Rectangle Name="Rectangle2">
+                <KeepTogether>true</KeepTogether>
+                <Height>0.25in</Height>
+                <Width>3.43334in</Width>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <BackgroundColor>Tomato</BackgroundColor>
+                </Style>
+              </Rectangle>
+            </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!ContactDetails.Value, "QuotationData")</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <Top>1.03833in</Top>
-            <Left>1.06056in</Left>
+            <Top>0.705in</Top>
+            <Left>0.005in</Left>
             <Height>0.25in</Height>
-            <Width>2.61666in</Width>
+            <Width>3.64667in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
+              <BackgroundColor>Tomato</BackgroundColor>
             </Style>
-          </Textbox>
-          <Textbox Name="Email">
-            <rd:DefaultName>Email</rd:DefaultName>
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=First(Fields!Email.Value, "QuotationData")</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <Top>0.65223in</Top>
-            <Left>1.06056in</Left>
-            <Height>0.25in</Height>
-            <Width>2.61666in</Width>
-            <ZIndex>4</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
+          </Rectangle>
           <Textbox Name="Textbox2">
             <rd:DefaultName>Textbox2</rd:DefaultName>
             <CanGrow>true</CanGrow>
@@ -622,46 +579,99 @@ WHERE q.QuotationId = @QuotationId</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>E-mail </Value>
+                    <Value>Quotation For : </Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Company Name: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!CompanyName.Value</Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>              Email:  </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!Email.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Contact Number: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!ContactDetails.Value</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>0.65223in</Top>
-            <Left>0.01389in</Left>
-            <Height>0.25in</Height>
-            <Width>1.04667in</Width>
-            <ZIndex>5</ZIndex>
+            <Top>1.105in</Top>
+            <Left>0.03833in</Left>
+            <Height>0.63333in</Height>
+            <Width>5.35in</Width>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
+              <BackgroundColor>#ffdcc4</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Rectangle Name="Rectangle3">
+            <KeepTogether>true</KeepTogether>
+            <Top>0.69667in</Top>
+            <Left>5.00168in</Left>
+            <Height>0.25in</Height>
+            <Width>0.48666in</Width>
+            <ZIndex>5</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <BackgroundColor>Tomato</BackgroundColor>
+            </Style>
+          </Rectangle>
           <Textbox Name="Textbox4">
-            <rd:DefaultName>Textbox2</rd:DefaultName>
+            <rd:DefaultName>Textbox4</rd:DefaultName>
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Contact</Value>
-                    <Style />
+                    <Value>QUOTATION</Value>
+                    <Style>
+                      <FontSize>14pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.03833in</Top>
-            <Height>0.25in</Height>
-            <Width>1.04667in</Width>
+            <Top>0.705in</Top>
+            <Left>3.69333in</Left>
+            <Height>0.24167in</Height>
+            <Width>1.275in</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -673,42 +683,136 @@ WHERE q.QuotationId = @QuotationId</CommandText>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="Textbox6">
+            <rd:DefaultName>Textbox6</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>DATE: </Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Left>4.25334in</Left>
+            <Height>0.18333in</Height>
+            <Width>1.23499in</Width>
+            <ZIndex>7</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox8">
+            <rd:DefaultName>Textbox8</rd:DefaultName>
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>QUOTATION ID : </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Fields!QuotationId.Value</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.23333in</Top>
+            <Left>4.25334in</Left>
+            <Height>0.195in</Height>
+            <Width>1.23499in</Width>
+            <ZIndex>8</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>2.25in</Height>
+        <Height>2.61667in</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>6.01389in</Width>
+      <Width>5.48833in</Width>
       <Page>
         <PageFooter>
-          <Height>0.45in</Height>
+          <Height>0.875in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
-            <Textbox Name="ExecutionTime">
-              <rd:DefaultName>ExecutionTime</rd:DefaultName>
+            <Textbox Name="Textbox10">
+              <rd:DefaultName>Textbox10</rd:DefaultName>
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Globals!ExecutionTime</Value>
+                      <Value>FOR ANY  ENQUIRIES</Value>
+                      <Style>
+                        <FontSize>14pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.02778in</Top>
+              <Left>1.805in</Left>
+              <Height>0.25833in</Height>
+              <Width>2.13in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox11">
+              <rd:DefaultName>Textbox11</rd:DefaultName>
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>+974 4499 9949          info@alrayahdrivingschool.qa            alrayahdrivingschool.qa
+</Value>
                       <Style />
                     </TextRun>
                   </TextRuns>
-                  <Style>
-                    <TextAlign>Right</TextAlign>
-                  </Style>
+                  <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>0.2in</Top>
-              <Left>4.01389in</Left>
+              <Top>0.38833in</Top>
+              <Left>0.03833in</Left>
               <Height>0.25in</Height>
-              <Width>2in</Width>
+              <Width>5.45in</Width>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -753,4 +857,16 @@ WHERE q.QuotationId = @QuotationId</CommandText>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <EmbeddedImages>
+    <EmbeddedImage Name="Screenshot20250714180220">
+      <MIMEType>image/png</MIMEType>
+      <ImageData>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</ImageData>
+    </EmbeddedImage>
+  </EmbeddedImages>
 </Report>

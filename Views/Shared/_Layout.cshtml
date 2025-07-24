@@ -47,7 +47,9 @@
                                     @if (role == "Admin")
                                     {
                                         <li><a class="dropdown-item" asp-controller="Quotation" asp-action="Review">Review Quotations</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Quotation" asp-action="Approved">Approved Quotations</a></li>
                                     }
+
                                     <li><a class="dropdown-item" asp-controller="Quotation" asp-action="List">My Quotations</a></li>
                                     <li><a class="dropdown-item" asp-controller="Enquiry" asp-action="AdminView">View Enquiries</a></li>
                                     <li><hr class="dropdown-divider" /></li>

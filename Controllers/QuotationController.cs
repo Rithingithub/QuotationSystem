@@ -157,6 +157,36 @@ namespace QuotationSystem.Controllers
             return View(pendingQuotations);
         }
 
+        [HttpGet]
+        public IActionResult Approved(string searchTerm)
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != "Admin") return RedirectToAction("Login", "Account");
+
+            var approvedQuotations = _context.Quotations
+                .Where(q => q.Status == "Approved")
+                .Include(q => q.User)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.CourseOption)
+                        .ThenInclude(co => co.Course)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.CourseOption)
+                        .ThenInclude(co => co.CourseType)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                approvedQuotations = approvedQuotations.Where(q =>
+                    q.CompanyName.Contains(searchTerm) ||
+                    q.Email.Contains(searchTerm) ||
+                    q.ContactDetails.Contains(searchTerm)
+                );
+            }
+
+            return View(approvedQuotations.OrderByDescending(q => q.CreatedAt).ToList());
+        }
+
+
         [HttpPost]
         public IActionResult UpdateStatus(int quotationId, string actionType)
         {
