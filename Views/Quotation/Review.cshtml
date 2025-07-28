@@ -127,9 +127,7 @@ else
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach
-
-                                                                                (var qc in quotation.QuotationCourses)
+                                            @foreach (var qc in quotation.QuotationCourses)
                                             {
                                                 var actualFullPrice = qc.QuotationCoursePrice?.FullCoursePrice ?? qc.CourseOption.FullCoursePrice;
                                                 var actualHalfPrice = qc.QuotationCoursePrice?.HalfCoursePrice ?? qc.CourseOption.HalfCoursePrice;
@@ -190,8 +188,15 @@ else
                         </button>
                     </form>
                 }
+
+                <!-- NEW HTML to PDF Download Button -->
+                <a href="@Url.Action("DownloadQuotationHtmlPdf", new { quotationId = quotation.QuotationId })" class="btn btn-warning btn-sm me-1">
+                    <i class="fas fa-file-pdf me-1"></i>Download HTML PDF
+                </a>
+
+                <!-- Original PDF Download Button -->
                 <a href="@Url.Action("DownloadQuotationPdf", new { quotationId = quotation.QuotationId })" class="btn btn-primary btn-sm">
-                    <i class="fas fa-download me-1"></i>Download PDF
+                    <i class="fas fa-download me-1"></i>Download Report PDF
                 </a>
             </div>
         </div>
