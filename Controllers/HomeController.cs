@@ -18,6 +18,7 @@ namespace QuotationSystem.Controllers
         {
             var quotations = _context.Quotations
                 .Where(q => q.Status == "Approved")
+                .Include(q => q.User)
                 .Include(q => q.QuotationCourses)
                     .ThenInclude(qc => qc.CourseOption)
                         .ThenInclude(co => co.Course)
