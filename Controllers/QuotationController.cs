@@ -4,6 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Reporting.NETCore;
 using QuotationSystem.Models;
 using System.Data;
+using DinkToPdf;
+using DinkToPdf.Contracts;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace QuotationSystem.Controllers
 {
@@ -11,13 +16,15 @@ namespace QuotationSystem.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IConverter _converter;
         private readonly string _ssrsServerUrl = "http://your-ssrs-server/ReportServer";
         private readonly string _reportPath = "/Reports/QuotationReport";
 
-        public QuotationController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
+        public QuotationController(AppDbContext context, IWebHostEnvironment webHostEnvironment, IConverter converter)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _converter = converter;
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
@@ -170,6 +177,11 @@ namespace QuotationSystem.Controllers
                 .OrderBy(q => q.CreatedAt)
                 .ToList();
 
+            // Get statistics for the view
+            ViewBag.TotalQuotations = _context.Quotations.Count();
+            ViewBag.ApprovedCount = _context.Quotations.Count(q => q.Status == "Approved");
+            ViewBag.DeclinedCount = _context.Quotations.Count(q => q.Status == "Declined");
+
             return View(pendingQuotations);
         }
 
@@ -302,6 +314,164 @@ namespace QuotationSystem.Controllers
 
             // Return PDF file
             return File(pdfBytes, "application/pdf", $"Quotation_{quotationId}.pdf");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DownloadQuotationHtmlPdf(int quotationId)
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != "Admin") return RedirectToAction("Login", "Account");
+
+            // Fetch quotation data with custom pricing
+            var quotation = _context.Quotations
+                .Where(q => q.QuotationId == quotationId)
+                .Include(q => q.User)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.CourseOption)
+                        .ThenInclude(co => co.Course)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.CourseOption)
+                        .ThenInclude(co => co.CourseType)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.QuotationCoursePrice)
+                .FirstOrDefault();
+
+            if (quotation == null)
+            {
+                return NotFound("Quotation not found.");
+            }
+
+            // Generate HTML from template
+            var htmlContent = await RenderViewToStringAsync("QuotationPdfTemplate", quotation);
+            ViewData["BasePath"] = _webHostEnvironment.WebRootPath; 
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
+                    ColorMode = ColorMode.Color,
+                    Orientation = Orientation.Portrait,
+                    PaperSize = PaperKind.A4,
+                    Margins = new MarginSettings { Top = 10, Bottom = 10, Left = 10, Right = 10 },
+                    DocumentTitle = $"Quotation {quotationId}"
+                },
+                Objects = {
+                    new ObjectSettings() {
+                        PagesCount = true,
+                        HtmlContent = htmlContent,
+                        WebSettings = { DefaultEncoding = "utf-8" },
+                        HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                        FooterSettings = { FontSize = 9, Center = "Al Rayah Driving School", Line = true }
+                    }
+                }
+            };
+
+            byte[] pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", $"Quotation_{quotationId}_HTML.pdf");
+        }
+
+        // New method with Base64 image handling
+        [HttpGet]
+        public async Task<IActionResult> DownloadQuotationHtmlPdfWithBase64(int quotationId)
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != "Admin") return RedirectToAction("Login", "Account");
+
+            // Fetch quotation data
+            var quotation = await _context.Quotations
+                .Where(q => q.QuotationId == quotationId)
+                .Include(q => q.User)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.CourseOption)
+                        .ThenInclude(co => co.Course)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.CourseOption)
+                        .ThenInclude(co => co.CourseType)
+                .Include(q => q.QuotationCourses)
+                    .ThenInclude(qc => qc.QuotationCoursePrice)
+                .FirstOrDefaultAsync();
+
+            if (quotation == null)
+            {
+                return NotFound("Quotation not found.");
+            }
+
+            // Prepare Base64 images
+            var logoPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "logo.png");
+            string logoBase64 = "";
+            if (System.IO.File.Exists(logoPath))
+            {
+                var logoBytes = await System.IO.File.ReadAllBytesAsync(logoPath);
+                logoBase64 = Convert.ToBase64String(logoBytes);
+            }
+            else
+            {
+                // Handle missing logo gracefully (e.g., log error or use placeholder)
+                logoBase64 = ""; // Optionally, set a placeholder Base64 string
+            }
+
+            var vehicleImages = new Dictionary<string, string>();
+            var vehicleImageFiles = Directory.GetFiles(Path.Combine(_webHostEnvironment.WebRootPath, "images", "vehicles"));
+            foreach (var file in vehicleImageFiles)
+            {
+                var bytes = await System.IO.File.ReadAllBytesAsync(file);
+                vehicleImages[Path.GetFileName(file)] = Convert.ToBase64String(bytes);
+            }
+
+            // Pass Base64 data to the view
+            ViewData["LogoBase64"] = logoBase64;
+            ViewData["VehicleImages"] = vehicleImages;
+
+            // Generate HTML from template
+            var htmlContent = await RenderViewToStringAsync("QuotationPdfTemplate", quotation);
+
+            var doc = new HtmlToPdfDocument()
+            {
+                GlobalSettings = {
+                    ColorMode = ColorMode.Color,
+                    Orientation = Orientation.Portrait,
+                    PaperSize = PaperKind.A4,
+                    Margins = new MarginSettings { Top = 10, Bottom = 10, Left = 10, Right = 10 },
+                    DocumentTitle = $"Quotation {quotationId}"
+                },
+                Objects = {
+                    new ObjectSettings() {
+                        PagesCount = true,
+                        HtmlContent = htmlContent,
+                        WebSettings = { DefaultEncoding = "utf-8", LoadImages = true },
+                        //HeaderSettings = { FontSize = 9, Right = "Page [page] of [toPage]", Line = true },
+                        //FooterSettings = { FontSize = 9, Center = "Al Rayah Driving School", Line = true }
+                    }
+                }
+            };
+
+            byte[] pdf = _converter.Convert(doc);
+            return File(pdf, "application/pdf", $"Quotation_{quotationId}_Base64.pdf");
+        }
+
+        private async Task<string> RenderViewToStringAsync(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var writer = new StringWriter())
+            {
+                var viewEngine = HttpContext.RequestServices.GetRequiredService<ICompositeViewEngine>();
+                var viewResult = viewEngine.FindView(ControllerContext, viewName, false);
+
+                if (!viewResult.Success)
+                {
+                    throw new ArgumentNullException($"Unable to find view '{viewName}'");
+                }
+
+                var viewContext = new ViewContext(
+                    ControllerContext,
+                    viewResult.View,
+                    ViewData,
+                    TempData,
+                    writer,
+                    new HtmlHelperOptions()
+                );
+
+                await viewResult.View.RenderAsync(viewContext);
+                return writer.GetStringBuilder().ToString();
+            }
         }
     }
 }

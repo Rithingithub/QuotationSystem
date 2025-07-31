@@ -1,0 +1,406 @@
+﻿@model QuotationSystem.Models.Quotation
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation - @Model.QuotationId</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            /* padding: 20px; */
+            background-color: #ffffff;
+        }
+
+        .quotation-container {
+            background: #f4a460;
+            border: 2px solid #e97318;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e97318 0%, #f4a460 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-right: 15px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .company-info h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .company-info p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+        }
+
+        .date-info {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .quotation-title {
+            background: #e97318;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .form-section {
+            padding: 20px;
+            background: #fff2e6;
+        }
+
+        .form-row {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .form-label {
+            width: 120px;
+            font-weight: bold;
+            color: #333;
+            font-size: 12px;
+        }
+
+        .form-value {
+            flex: 1;
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            font-size: 12px;
+        }
+
+        .courses-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+            .courses-table th {
+                background: #8b4513;
+                color: white;
+                padding: 10px 5px;
+                text-align: center;
+                font-size: 12px;
+                border: 1px solid #654321;
+                font-weight: bold;
+            }
+
+            .courses-table td {
+                padding: 8px 5px;
+                text-align: center;
+                border: 1px solid #ddd;
+                font-size: 11px;
+                vertical-align: middle;
+            }
+
+            .courses-table tbody tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            .courses-table tbody tr:nth-child(odd) {
+                background-color: white;
+            }
+
+        .vehicle-img {
+            width: 80px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .course-name {
+            background: #e97318;
+            color: white;
+            padding: 5px;
+            margin: 2px 0;
+            font-weight: bold;
+            font-size: 11px;
+        }
+
+        .course-type-box {
+            background: #8b4513;
+            color: white;
+            padding: 5px;
+            margin: 2px 0;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .course-description {
+            font-size: 10px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .price-highlight {
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 12px;
+        }
+
+        .price-cell {
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 12px;
+        }
+
+        .custom-price-badge {
+            background: #ffc107;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+            margin-top: 2px;
+            display: inline-block;
+        }
+
+        .standard-price {
+            font-size: 10px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .notes-section {
+            background: #e97318;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .notes-content {
+            background: #fff2e6;
+            padding: 15px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+            .notes-content div {
+                margin-bottom: 5px;
+            }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 0 20px;
+        }
+
+        .signature-box {
+            text-align: center;
+            border-top: 1px solid #333;
+            padding-top: 5px;
+            width: 150px;
+            font-size: 12px;
+        }
+
+        .thank-you {
+            text-align: center;
+            font-weight: bold;
+            color: #8b4513;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+
+        .checkbox {
+            width: 15px;
+            height: 15px;
+            background: #28a745;
+            color: white;
+            border-radius: 2px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .total-row {
+            background: #8b4513 !important;
+            color: white !important;
+            font-weight: bold;
+        }
+
+            .total-row td {
+                font-size: 12px !important;
+                padding: 10px 5px !important;
+            }
+    </style>
+</head>
+<body>
+    <div class="quotation-container">
+        <div class="header">
+            <div class="logo-section">
+                @if (!string.IsNullOrEmpty(ViewData["LogoBase64"] as string))
+                {
+                    <img src="data:image/png;base64,@ViewData["LogoBase64"]" alt="Logo" class="logo" />
+                }
+                else
+                {
+                    <div class="logo" style="background: #ccc; width: 70px; height: 70px; border-radius: 50%;"></div> <!-- Placeholder if logo is missing -->
+                }                
+                <div class="company-info">
+                    <h1>ALRAYAH DRIVING SCHOOL</h1>
+                    <p>مدرسة الراية لتعليم قيادة السيارات</p>
+                </div>
+            </div>
+            <div class="date-info">
+                <div>Date: @DateTime.Now.ToString("dd/MM/yyyy")</div>
+                <div>Quotation: @Model.QuotationId</div>
+            </div>
+        </div>
+
+        <div class="quotation-title">QUOTATION</div>
+
+        <div class="form-section">
+            <div class="form-row">
+                <div class="form-label">Quotation For:</div>
+                <div class="form-value">@Model.CompanyName</div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">Company Name:</div>
+                <div class="form-value">@Model.CompanyName</div>
+                <div class="form-label" style="margin-left: 20px;">Contact Person:</div>
+                <div class="form-value">@(Model.User?.Name ?? "N/A")</div>
+            </div>
+            <div class="form-row">
+                <div class="form-label">Contact Number:</div>
+                <div class="form-value">@Model.ContactDetails</div>
+            </div>
+        </div>
+
+        <table class="courses-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">License Type</th>
+                    <th style="width: 15%;">Vehicles</th>
+                    <th style="width: 20%;">Course Type</th>
+                    <th style="width: 25%;">Course Price</th>
+                    <th style="width: 12.5%;">Full Course</th>
+                    <th style="width: 12.5%;">Half Course</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var qc in Model.QuotationCourses)
+                {
+                    var actualFullPrice = qc.QuotationCoursePrice?.FullCoursePrice ?? qc.CourseOption.FullCoursePrice;
+                    var actualHalfPrice = qc.QuotationCoursePrice?.HalfCoursePrice ?? qc.CourseOption.HalfCoursePrice;
+                    var isCustomPrice = qc.QuotationCoursePrice?.IsCustomPrice ?? false;
+                    var vehicleType = qc.CourseOption.Course.CourseName.ToLower();
+                    var vehicleImage = "";
+
+                    if (vehicleType.Contains("light")) vehicleImage = "light-vehicle.png";
+                    else if (vehicleType.Contains("motorcycle")) vehicleImage = "motorcycle.png";
+                    else if (vehicleType.Contains("bus")) vehicleImage = "bus.png";
+                    else if (vehicleType.Contains("truck")) vehicleImage = "truck.png";
+                    else if (vehicleType.Contains("trailer")) vehicleImage = "trailer.png";
+                    else if (vehicleType.Contains("excavator")) vehicleImage = "excavator.png";
+                    else if (vehicleType.Contains("forklift")) vehicleImage = "forklift.png";
+                    else if (vehicleType.Contains("crane")) vehicleImage = "crane.png";
+                    else if (vehicleType.Contains("shovel")) vehicleImage = "shovel.png";
+                    else vehicleImage = "default-vehicle.png";
+
+                    <tr>
+                        <td>
+                            <div class="course-name">@qc.CourseOption.Course.VehicleType</div>
+                        </td>
+                        <td>
+                            @if ((ViewData["VehicleImages"] as Dictionary<string, string>)?.ContainsKey(vehicleImage) == true)
+                            {
+                                <img src="data:image/png;base64,@((ViewData["VehicleImages"] as Dictionary<string, string>)[vehicleImage])" alt="@qc.CourseOption.Course.VehicleType" class="vehicle-img" />
+                            }
+                            else
+                            {
+                                <div class="vehicle-img" style="background: #ccc; width: 45px; height: 35px;"></div> <!-- Placeholder if image is missing -->
+                            }                        
+                         </td>
+                        <td>
+                            <div class="course-type-box">
+                                @qc.CourseOption.CourseType.TypeName Course
+                            </div>
+                            <div class="course-description">@qc.CourseOption.Course.CourseName</div>
+                        </td>
+                        <td>
+                            <div class="price-highlight">QR @actualFullPrice.ToString("N0")</div>
+                            @if (isCustomPrice)
+                            {
+                                <div class="custom-price-badge">Custom Price</div>
+                            }
+                            else
+                            {
+                                <div class="standard-price">Standard Price</div>
+                            }
+                        </td>
+                        <td class="price-cell">QR @actualFullPrice.ToString("N0")</td>
+                        <td class="price-cell">QR @actualHalfPrice.ToString("N0")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="notes-section">
+            SPECIAL NOTES AND INSTRUCTIONS
+        </div>
+
+        <div class="notes-content">
+            <div>• Signal, Theory, Computer Class = 350 QR</div>
+            <div>• Test Fees = 50 QR</div>
+            <div>• Eye test = 50 QR</div>
+            <br>
+            <div style="font-weight: bold;">Above information is not an invoice and only an estimate of services described above.</div>
+            <div>Payment will be collected in prior to provision of services described in this quote.</div>
+            <br>
+            <div style="font-weight: bold;">Please confirm your acceptance of this quote by signing below and return this document.</div>
+        </div>
+
+        <div class="signature-section">
+            <div class="signature-box">
+                <div>Signature</div>
+            </div>
+            <div class="signature-box">
+                <div>Name</div>
+            </div>
+            <div class="signature-box">
+                <div>Date</div>
+            </div>
+        </div>
+
+        <div class="thank-you">
+            Thank you for your Business!
+        </div>
+    </div>
+</body>
+</html>
