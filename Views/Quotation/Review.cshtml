@@ -234,7 +234,7 @@ else
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="@Url.Action("DownloadQuotationHtmlPdf", new { quotationId = quotation.QuotationId })">
+                                    <a class="dropdown-item" href="@Url.Action("DownloadQuotationHtmlPdfWithBase64", new { quotationId = quotation.QuotationId })">
                                         <i class="fas fa-file-pdf me-2 text-danger"></i>HTML to PDF (Recommended)
                                     </a>
                                 </li>
